@@ -21,8 +21,7 @@ const itemVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0 },
 };
-
-const FeaturesSection = () => {
+function FeaturesSection() {
   return (
     <motion.div
       initial="hidden"
@@ -66,7 +65,7 @@ const FeaturesSection = () => {
       </div>
     </motion.div>
   );
-};
+}
 
 const FeatureCard = ({
   imageSrc,
