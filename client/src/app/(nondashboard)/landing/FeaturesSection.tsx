@@ -46,7 +46,7 @@ function FeaturesSection() {
                   [
                     "Trustworthy and Verified Listings",
                     "Browse Rental Listings with Ease",
-                    "Simplify Your Rental Search with Advanced",
+                    "Simplify Your Rental Search",
                   ][index]
                 }
                 description={
