@@ -1,4 +1,3 @@
-import { create } from "axios";
 import express from "express";
 import { createTenant, getTenant } from "../controllers/tenantControllers";
 
