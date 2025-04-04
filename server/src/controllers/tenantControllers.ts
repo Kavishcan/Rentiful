@@ -151,7 +151,7 @@ export const addFavoriteProperty = async (
     } else {
       res.status(409).json({ message: "Property already added as favorite" });
     }
-  } catch (error: any) {  
+  } catch (error: any) {
     res
       .status(500)
       .json({ message: `Error adding favorite property: ${error.message}` });
