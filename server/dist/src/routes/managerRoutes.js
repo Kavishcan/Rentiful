@@ -4,9 +4,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const managerControllers_1 = require("../controllers/managerControllers");
+const tenantControllers_1 = require("../controllers/tenantControllers");
 const router = express_1.default.Router();
-router.get("/:cognitoId", managerControllers_1.getManager);
-router.put("/:cognitoId", managerControllers_1.updateManager);
-router.post("/", managerControllers_1.createManager);
+router.get("/:cognitoId", tenantControllers_1.getTenant);
+router.put("/:cognitoId", tenantControllers_1.updateTenant);
+router.post("/", tenantControllers_1.createTenant);
+router.get("/:cognitoId/current-residences", tenantControllers_1.getCurrentResidences);
+router.post("/:cognitoId/favorites/:propertyId", tenantControllers_1.addFavoriteProperty);
+router.delete("/:cognitoId/favorites/:propertyId", tenantControllers_1.removeFavoriteProperty);
 exports.default = router;

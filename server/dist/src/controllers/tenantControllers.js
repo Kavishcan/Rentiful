@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCurrentResidences = exports.updateTenant = exports.createTenant = exports.getTenant = void 0;
+exports.removeFavoriteProperty = exports.addFavoriteProperty = exports.getCurrentResidences = exports.updateTenant = exports.createTenant = exports.getTenant = void 0;
 const client_1 = require("@prisma/client");
 const wkt_1 = require("@terraformer/wkt");
 const prisma = new client_1.PrismaClient();
@@ -17,24 +17,22 @@ const getTenant = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { cognitoId } = req.params;
         const tenant = yield prisma.tenant.findUnique({
-            where: {
-                cognitoId: cognitoId,
-            },
+            where: { cognitoId },
             include: {
                 favorites: true,
             },
         });
         if (tenant) {
-            res.status(200).json(tenant);
+            res.json(tenant);
         }
         else {
             res.status(404).json({ message: "Tenant not found" });
         }
     }
     catch (error) {
-        res.status(500).json({
-            message: `Error retrieving tenant: ${error.message}`,
-        });
+        res
+            .status(500)
+            .json({ message: `Error retrieving tenant: ${error.message}` });
     }
 });
 exports.getTenant = getTenant;
@@ -52,9 +50,9 @@ const createTenant = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         res.status(201).json(tenant);
     }
     catch (error) {
-        res.status(500).json({
-            message: `Error creating tenant: ${error.message}`,
-        });
+        res
+            .status(500)
+            .json({ message: `Error creating tenant: ${error.message}` });
     }
 });
 exports.createTenant = createTenant;
@@ -63,9 +61,7 @@ const updateTenant = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const { cognitoId } = req.params;
         const { name, email, phoneNumber } = req.body;
         const updateTenant = yield prisma.tenant.update({
-            where: {
-                cognitoId,
-            },
+            where: { cognitoId },
             data: {
                 name,
                 email,
@@ -75,9 +71,9 @@ const updateTenant = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         res.json(updateTenant);
     }
     catch (error) {
-        res.status(500).json({
-            message: `Error updating tenant: ${error.message}`,
-        });
+        res
+            .status(500)
+            .json({ message: `Error updating tenant: ${error.message}` });
     }
 });
 exports.updateTenant = updateTenant;
@@ -110,3 +106,61 @@ const getCurrentResidences = (req, res) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 exports.getCurrentResidences = getCurrentResidences;
+const addFavoriteProperty = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { cognitoId, propertyId } = req.params;
+        const tenant = yield prisma.tenant.findUnique({
+            where: { cognitoId },
+            include: { favorites: true },
+        });
+        if (!tenant) {
+            res.status(404).json({ message: "Tenant not found" });
+            return;
+        }
+        const propertyIdNumber = Number(propertyId);
+        const existingFavorites = tenant.favorites || [];
+        if (!existingFavorites.some((fav) => fav.id === propertyIdNumber)) {
+            const updatedTenant = yield prisma.tenant.update({
+                where: { cognitoId },
+                data: {
+                    favorites: {
+                        connect: { id: propertyIdNumber },
+                    },
+                },
+                include: { favorites: true },
+            });
+            res.json(updatedTenant);
+        }
+        else {
+            res.status(409).json({ message: "Property already added as favorite" });
+        }
+    }
+    catch (error) {
+        res
+            .status(500)
+            .json({ message: `Error adding favorite property: ${error.message}` });
+    }
+});
+exports.addFavoriteProperty = addFavoriteProperty;
+const removeFavoriteProperty = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { cognitoId, propertyId } = req.params;
+        const propertyIdNumber = Number(propertyId);
+        const updatedTenant = yield prisma.tenant.update({
+            where: { cognitoId },
+            data: {
+                favorites: {
+                    disconnect: { id: propertyIdNumber },
+                },
+            },
+            include: { favorites: true },
+        });
+        res.json(updatedTenant);
+    }
+    catch (err) {
+        res
+            .status(500)
+            .json({ message: `Error removing favorite property: ${err.message}` });
+    }
+});
+exports.removeFavoriteProperty = removeFavoriteProperty;
