@@ -64,7 +64,7 @@ const NewProperty = () => {
   };
 
   return (
-    <div className="dashboard-container">
+    <div className="dashboard-container mt-[1200px]">
       <Header
         title="Add New Property"
         subtitle="Create a new property listing with detailed information"
@@ -91,7 +91,7 @@ const NewProperty = () => {
             <hr className="my-6 border-gray-200" />
 
             {/* Fees */}
-            <div className="space-y-6">
+            <div>
               <h2 className="text-lg font-semibold mb-4">Fees</h2>
               <CustomFormField
                 name="pricePerMonth"
@@ -115,7 +115,7 @@ const NewProperty = () => {
             <hr className="my-6 border-gray-200" />
 
             {/* Property Details */}
-            <div className="space-y-6">
+            <div>
               <h2 className="text-lg font-semibold mb-4">Property Details</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <CustomFormField
@@ -204,7 +204,7 @@ const NewProperty = () => {
             <hr className="my-6 border-gray-200" />
 
             {/* Additional Information */}
-            <div className="space-y-6">
+            <div>
               <h2 className="text-lg font-semibold mb-4">
                 Additional Information
               </h2>
