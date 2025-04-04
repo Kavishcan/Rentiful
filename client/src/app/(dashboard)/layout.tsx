@@ -14,7 +14,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => { 
+  useEffect(() => {
     if (authUser) {
       const userRole = authUser.userRole?.toLowerCase();
       if (
