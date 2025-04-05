@@ -3,18 +3,18 @@ import HeroSection from "./HeroSection";
 import FeaturesSection from "./FeaturesSection";
 import DiscoverSection from "./DiscoverSection";
 import CallToActionSection from "./CallToActionSection";
-import Footer from "./Footer";
+import FooterSection from "./Footer";
 
-function Landing() {
+const Landing = () => {
   return (
     <div>
       <HeroSection />
       <FeaturesSection />
       <DiscoverSection />
       <CallToActionSection />
-      <Footer />
+      <FooterSection />
     </div>
   );
-}
+};
 
 export default Landing;
